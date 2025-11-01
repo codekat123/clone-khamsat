@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'users',
     'user_profile',
     'services',
-    # 'chat',
+    'chat',
 ]
 SITE_ID = 1
 
