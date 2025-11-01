@@ -46,13 +46,22 @@ class ServiceListAPIView(ListAPIView):
         return services
 
 
+
+class ServiceSellerListAPIView(ListAPIView):
+    serializer = ServiceSerializer
+    permission_classes = [IsAuthenticated,IsSeller]
+
+    def get_queryset(self):
+        return Service.objects.filter(freelancer__user=self.request.user)
+
+
 class ServiceCreateAPIView(CreateAPIView):
     serializer_class = ServiceSerializer
     permission_classes = [IsAuthenticated, IsSeller]
 
     def perform_create(self, serializer):
         category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
-        user = self.request.user.services
+        user = self.request.user.seller_profile
         serializer.save(freelancer=user, category=category)
 
 
@@ -75,10 +84,11 @@ class ServiceUpdateAPIView(UpdateAPIView):
     lookup_field = 'slug'
 
     def get_queryset(self):
-        user = getattr(self.request.user, 'services', None)
+        user = getattr(self.request.user, 'seller_profile', None)
+        slug = self.kwargs['slug']
         if user is None:
             return Service.objects.none() 
-        return Service.objects.filter(freelancer=self.request.user)
+        return Service.objects.filter(freelancer=self.request.user,slug=slug)
 
 class ServiceDeleteAPIView(DestroyAPIView):
     serializer_class = ServiceSerializer
@@ -86,8 +96,8 @@ class ServiceDeleteAPIView(DestroyAPIView):
     lookup_field = 'slug'
 
     def get_queryset(self):
-        user = getattr(self.request.user, 'services', None)
+        user = getattr(self.request.user, 'seller_profile', None)
+        slug = self.kwargs['slug']
         if user is None:
             return Service.objects.none() 
-        return Service.objects.filter(freelancer=self.request.user)
-
+        return Service.objects.filter(freelancer=self.request.user,slug=slug)

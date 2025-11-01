@@ -5,6 +5,7 @@ app_name = 'services'
 
 urlpatterns = [
     path('<slug:slug>/services/', ServiceListAPIView.as_view(), name='service-list'),
+    path('service/seller/',ServiceSellerListAPIView.as_view,name='service-seller'),
     path('<slug:slug>/services/create/', ServiceCreateAPIView.as_view(), name='service-create'),
     path('<slug:slug>/update/', ServiceUpdateAPIView.as_view(), name='service-update'),
     path('<slug:slug>/delete/', ServiceDeleteAPIView.as_view(), name='service-delete'),

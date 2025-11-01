@@ -9,6 +9,7 @@ urlpatterns = [
     path('profile/',include('user_profile.urls',namespace='profile')),
     path('services/',include('services.urls',namespace='services')),
     path('transaction/',include('transaction.urls',namespace='transaction')),
+    # path('chat/',include('chat.urls',namespace='chat')),
 ]
 
 if settings.DEBUG:

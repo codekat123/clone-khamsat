@@ -1,7 +1,9 @@
 from django.db import models
 from user_profile.models import BuyerProfile , SellerProfile
 from services.models import Service
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 
 class Order(models.Model):
@@ -45,3 +47,12 @@ class Order(models.Model):
 
 class Transaction(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='transaction')
+    commission = models.DecimalField(max_digits=2,decimal_places=1)
+    create_at = models.DateTimeField(auto_now_add=True)
+
+class OrderStatusHistory(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='status_history')
+    chanaged = models.ForeignKey(User,on_delete=models.SET_NULL,related_name='status_history',null=True)
+    old_status = models.CharField(max_length=20)
+    new_status = models.CharField(max_length=20)
+    create_at = models.DateTimeField(auto_now_add=True)
