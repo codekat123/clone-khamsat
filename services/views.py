@@ -14,7 +14,8 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError, NotFound
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 class CategoryCreateListAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
@@ -35,14 +36,24 @@ class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 class ServiceListAPIView(ListAPIView):
     serializer_class = ServiceSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['title', 'description', 'category__name']
+    filterset_fields = {'price': ['gte', 'lte']}
+    ordering_fields = ['created_at']
+    ordering = ['-created_at']
 
     def get_queryset(self):
         category_slug = self.kwargs.get('slug')
-        key_cache = f"service_{category_slug}"
-        services = cache.get(key_cache)
+        cache_key = f"services_{category_slug}"
+        
+        services = cache.get(cache_key)
         if not services:
-            service = Service.objects.filter(category__slug=category_slug, is_active=True)
-            cache.set(key_cache,service)
+            services = Service.objects.filter(
+                category__slug=category_slug,
+                is_active=True
+            ).select_related('category')  
+            cache.set(cache_key, services, timeout=60 * 5)  
+        
         return services
 
 
@@ -60,8 +71,11 @@ class ServiceCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated, IsSeller]
 
     def perform_create(self, serializer):
-        category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
         user = self.request.user.seller_profile
+        count = Service.objects.filter(seller=user).count()
+        if count > 5:
+            raise ValidationError('you cannot create more than five serives ')
+        category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
         serializer.save(freelancer=user, category=category)
 
 
@@ -88,7 +102,7 @@ class ServiceUpdateAPIView(UpdateAPIView):
         slug = self.kwargs['slug']
         if user is None:
             return Service.objects.none() 
-        return Service.objects.filter(freelancer=self.request.user,slug=slug)
+        return Service.objects.filter(freelancer=user,slug=slug)
 
 class ServiceDeleteAPIView(DestroyAPIView):
     serializer_class = ServiceSerializer
@@ -100,4 +114,4 @@ class ServiceDeleteAPIView(DestroyAPIView):
         slug = self.kwargs['slug']
         if user is None:
             return Service.objects.none() 
-        return Service.objects.filter(freelancer=self.request.user,slug=slug)
+        return Service.objects.filter(freelancer=user,slug=slug)

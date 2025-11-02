@@ -7,6 +7,7 @@ class ServiceSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'price', 'slug']
         read_only_fields = ['slug']
 
+
 class CategorySerializer(serializers.ModelSerializer):
 
 

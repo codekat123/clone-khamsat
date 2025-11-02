@@ -10,6 +10,8 @@ urlpatterns = [
     path('services/',include('services.urls',namespace='services')),
     path('transaction/',include('transaction.urls',namespace='transaction')),
     path('chat/',include('chat.urls',namespace='chat')),
+    path('rating/',include('rating.urls',namespace='rating')),
+    path('dashboard/',include('dashboard.urls',namespace='dashboard')),
 ]
 
 if settings.DEBUG:
