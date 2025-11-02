@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'services',
     'chat',
     'rating',
+    'wallet',
     'dashboard',
 ]
 SITE_ID = 1

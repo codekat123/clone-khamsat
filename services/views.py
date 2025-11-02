@@ -16,6 +16,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError, NotFound
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django.db import transaction
+from django.core.exceptions import ValidationError
 
 class CategoryCreateListAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
@@ -115,3 +117,4 @@ class ServiceDeleteAPIView(DestroyAPIView):
         if user is None:
             return Service.objects.none() 
         return Service.objects.filter(freelancer=user,slug=slug)
+

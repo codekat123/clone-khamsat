@@ -12,6 +12,7 @@ urlpatterns = [
     path('chat/',include('chat.urls',namespace='chat')),
     path('rating/',include('rating.urls',namespace='rating')),
     path('dashboard/',include('dashboard.urls',namespace='dashboard')),
+    path('wallet/',include('wallet.urls',namespace='wallet')),
 ]
 
 if settings.DEBUG:

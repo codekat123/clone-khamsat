@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Order, Transaction
+from .models import Order
 
 
 
@@ -9,14 +9,6 @@ class OrderSerializer(serializers.ModelSerializer):
           fields = '__all__'
 
 
-class TransactionSerializer(serializers.ModelSerializer):
-     order = OrderSerializer(read_only=True)
-     class Meta:
-          model = Transaction
-          fields = '__all__'
-     
-     def get_total_after_commission(self, obj):
-        return obj.order.total_price - obj.commission
      
 
 class OrderStatusUpdateSerializer(serializers.ModelSerializer):

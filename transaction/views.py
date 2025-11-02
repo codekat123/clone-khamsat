@@ -9,7 +9,7 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 
-from .models import Order, Transaction, OrderStatusHistory
+from .models import Order, OrderStatusHistory
 from .serializers import OrderSerializer, OrderStatusUpdateSerializer
 from user_profile.permissions import IsBuyer, IsSeller
 from services.models import Service
