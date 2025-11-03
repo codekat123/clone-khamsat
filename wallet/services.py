@@ -24,7 +24,6 @@ def transfer_funds(sender_user, recipient_user, amount_cents, idempotency_key=No
             transaction_type='TRANSFER',
             amount=amount_cents,
             note=note,
-            to_user=recipient_user,
         )
         recipient_wallet.transactions.create(
             transaction_type='DEPOSIT',

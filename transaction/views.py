@@ -15,9 +15,7 @@ from user_profile.permissions import IsBuyer, IsSeller
 from services.models import Service
 
 
-# ==========================
-#   ORDER CREATION
-# ==========================
+
 class OrderCreateAPIView(CreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -41,9 +39,7 @@ class OrderCreateAPIView(CreateAPIView):
         )
 
 
-# ==========================
-#   ORDER RETRIEVE
-# ==========================
+
 class OrderRetrieveAPIView(RetrieveAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated,IsSeller]
@@ -53,9 +49,7 @@ class OrderRetrieveAPIView(RetrieveAPIView):
         return Order.objects.filter(seller__user=user)
 
 
-# ==========================
-#   ORDER LIST (SELLER)
-# ==========================
+
 class OrderListAPIView(ListAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated, IsSeller]
@@ -64,9 +58,7 @@ class OrderListAPIView(ListAPIView):
         return Order.objects.filter(seller__user=self.request.user)
 
 
-# ==========================
-#   SELLER UPDATES ORDER STATUS
-# ==========================
+
 class OrderSellerStatusUpdateAPIView(UpdateAPIView):
     serializer_class = OrderStatusUpdateSerializer
     permission_classes = [IsAuthenticated, IsSeller]
@@ -99,9 +91,7 @@ class OrderSellerStatusUpdateAPIView(UpdateAPIView):
         )
 
 
-# ==========================
-#   BUYER UPDATES ORDER STATUS
-# ==========================
+
 class OrderBuyerStatusUpdateAPIView(UpdateAPIView):
     serializer_class = OrderStatusUpdateSerializer
     permission_classes = [IsAuthenticated, IsBuyer]

@@ -7,6 +7,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 from decouple import config
 from datetime import timedelta
 import os
+from celery.schedules import crontab
+
+
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -187,5 +190,11 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             'hosts': [REDIS_URL],
         },
+    },
+}
+CELERY_BEAT_SCHEDULE = {
+    'test-task-every-10-seconds': {
+        'task': 'dashboard.tasks.send_deadline_reminders',
+        'schedule': crontab(hour=8, minute=0),
     },
 }

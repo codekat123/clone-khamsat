@@ -2,6 +2,10 @@ from django.db import models
 from user_profile.models import BuyerProfile , SellerProfile
 from services.models import Service
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator
+
+
+
 
 User = get_user_model()
 
@@ -35,6 +39,7 @@ class Order(models.Model):
         choices=Status.choices,
         default=Status.PENDING
     )
+    deadline = models.DateField()
     price = models.DecimalField(max_digits=5,decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

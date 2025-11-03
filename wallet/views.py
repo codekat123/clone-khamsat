@@ -62,7 +62,7 @@ class WalletTransactionCreateAPIView(CreateAPIView):
                     raise ValidationError("You cannot transfer money to yourself.")
 
                 recipient_wallet = to_user.wallet
-                # atomic fund transfer
+
                 from .services import transfer_funds
                 transfer_funds(
                     sender_user=user,
@@ -83,3 +83,11 @@ class WalletRetrieveAPIView(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user.wallet
+    
+    def retrieve(self,request,*args,**kwargs):
+        wallet = self.get_object()
+        serializer = self.get_serializer(wallet)
+        data = serializer.data
+        data['transaction_count'] = wallet.transactions.count()
+        data['transaction_count'] = wallet.transactions.last().create_at if wallet.transactions.exists() else None
+        return Response(data)
