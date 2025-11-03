@@ -21,7 +21,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
 INSTALLED_APPS = [
     "django.contrib.sites",
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'rating',
     'wallet',
     'dashboard',
+    'admin',
 ]
 SITE_ID = 1
 

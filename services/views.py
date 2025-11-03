@@ -52,7 +52,8 @@ class ServiceListAPIView(ListAPIView):
         if not services:
             services = Service.objects.filter(
                 category__slug=category_slug,
-                is_active=True
+                is_active=True,
+                is_pause=False,
             ).select_related('category')  
             cache.set(cache_key, services, timeout=60 * 5)  
         

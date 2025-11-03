@@ -12,8 +12,6 @@ class IsBuyer(BasePermission):
      def has_object_permission(self,request,view,obj):
           return obj.buyer_profile.user == request.user
 
-class IsAdminOrReadOnly(BasePermission):
+class IsAdmin(BasePermission):
      def bas_permission(self,request,view):
-          if request.method in SAFE_METHODS:
-               return
           return request.user and request.user.is_staff

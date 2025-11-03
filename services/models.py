@@ -33,6 +33,7 @@ class Service(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     freelancer = models.ForeignKey(SellerProfile,on_delete=models.CASCADE,related_name='services')
     is_active = models.BooleanField(default=False)
+    is_pause = models.BooleanField(default=False)
     rating = models.FloatField(default=0.0)
     orders_count = models.PositiveIntegerField(default=0)
 

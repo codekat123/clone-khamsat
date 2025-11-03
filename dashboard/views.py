@@ -30,7 +30,7 @@ class ToggleServiceStatusAPIView(APIView):
             raise PermissionDenied("You don't have permission to modify this service.")
 
 
-        service.is_active = not service.is_active
+        service.is_pause = not service.is_pause
         service.save()
 
         status_msg = (
@@ -163,4 +163,4 @@ class SellerInfoAPIView(APIView):
         # Cache the data for 1 minute
         cache.set(cache_key, data, timeout=60)
 
-        return Response(SellerDashboardSerializer(data).data, status=status.HTTP_2
+        return Response(SellerDashboardSerializer(data).data, status=status.HTTP_200_OK)
