@@ -11,3 +11,5 @@ class SellerDashboardSerializer(serializers.Serializer):
     recent_transactions = serializers.ListField()
     average_rating = serializers.DictField()
     active_orders_deadlines = serializers.ListField()
+    
+    

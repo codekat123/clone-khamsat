@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from .models import Category, Service
 from .serializers import CategorySerializer,ServiceSerializer
 from django.core.cache import cache
-from user_profile.permissions import IsSeller,IsBuyer,IsAdminOrReadOnly
+from user_profile.permissions import IsSeller,IsBuyer,IsAdmin
 from rest_framework.generics import (
     ListAPIView,
     CreateAPIView,
@@ -23,14 +23,14 @@ class CategoryCreateListAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     lookup_field = 'slug'
-    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
+    permission_classes = [IsAuthenticated, IsAdmin]
 
 
 class CategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
+    permission_classes = [IsAuthenticated, IsAdmin]
 
 
 

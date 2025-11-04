@@ -35,7 +35,7 @@ class ToggleServiceStatusAPIView(APIView):
 
         status_msg = (
             "Your service is now hidden (paused)."
-            if not service.is_active
+            if service.is_pause
             else "Your service is now visible to buyers."
         )
 
@@ -160,7 +160,7 @@ class SellerInfoAPIView(APIView):
             "order_status_summary": list(order_status_summary),
         }
 
-        # Cache the data for 1 minute
-        cache.set(cache_key, data, timeout=60)
+        
+        cache.set(cache_key, data, timeout=60*60)
 
         return Response(SellerDashboardSerializer(data).data, status=status.HTTP_200_OK)
