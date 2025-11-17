@@ -174,24 +174,3 @@ Check each app’s `urls.py` for details.
 
 Alternatively, set `BREVO_API_KEY` and connect through your email sending logic if implemented.
 
-## Testing
-
-- Test shells exist; add tests under each app’s `tests.py`.
-- Run:
-
-```bash
-python manage.py test
-```
-
-## Deployment Notes
-
-- Use ASGI server (e.g., uvicorn/daphne) for WebSockets:
-  - Example: `daphne -b 0.0.0.0 -p 8000 src.asgi:application`
-- Ensure Redis (for cache and channels) and Celery services are provisioned.
-- Configure `ALLOWED_HOSTS`, secure `SECRET_KEY`, set `DEBUG=false`.
-- Configure static/media storage and reverse proxy for websockets (e.g., Nginx).
-- Run migrations and collectstatic on deploy.
-
-## License
-
-Add your license here.
